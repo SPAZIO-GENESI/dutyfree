@@ -31,17 +31,17 @@ a {
 }
 a:focus,
 a:hover {
-  color: #000000;
+  color: rgba(255, 0, 0, 0.678);
 }
 
 /* Custom default button */
 .btn-secondary,
 .btn-secondary:hover,
 .btn-secondary:focus {
-  color: #333;
+  color: #682c2c;
   text-shadow: none; /* Prevent inheritance from `body` */
   background-color: #fff;
-  border: .05rem solid #fff;
+  border: .05rem solid #860000;
 }
 
 
@@ -58,7 +58,7 @@ body {
   
 }
 a {
-  color: blue;
+  color: rgba(255, 0, 0, 0.678);
   text-decoration: underline;
   }
   
@@ -100,7 +100,7 @@ body{
 
 .nav-masthead .nav-link:hover,
 .nav-masthead .nav-link:focus {
-  border-bottom-color: rgba(255, 255, 255, .25);
+  border-bottom-color: rgba(143, 0, 0, 0.25);
 }
 
 .nav-masthead .nav-link + .nav-link {
@@ -109,7 +109,7 @@ body{
 
 .nav-masthead .active {
   color: #000000;
-  border-bottom-color: #fff;
+  border-bottom-color: #9b0000;
 }
 
 @media (min-width: 48em) {
