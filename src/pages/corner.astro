@@ -15,6 +15,7 @@ try {
   rows = (data.values ?? []).slice(1);
 
   const columnConfig = [
+    
     { key: "Thumb", display: "Copertina", visible: true, class: "" },
     { key: "titolo", display: "Titolo", visible: true, class: "" },
     { key: "Firma", display: "Autore", visible: true, class: "" },
@@ -28,7 +29,7 @@ try {
   displayColumns = columnConfig.filter(col => col.visible);
 
   // FILTRO PER STATO = TRUE
-  const statoIndex = headers.indexOf("stato");
+  const statoIndex = headers.indexOf("visibile");
   if (statoIndex >= 0) {
     filteredRows = rows.filter(row => {
       const statoValue = row[statoIndex];
