@@ -5,12 +5,27 @@ let metaTitle = "Catalogo libri";
 let metaDesc = "Catalogo libri disponibili";
 let headers = [];
 let rows = [];
+let displayColumns = [];
+
+const columnConfig = [
+    { key: "Thumb", display: "Copertina", visible: true, class: "" },
+    { key: "titolo", display: "Titolo", visible: true, class: "" },
+    { key: "Firma", display: "Autore", visible: true, class: "" },
+    { key: "editore", display: "Editore", visible: false, class: "" },
+    { key: "tag", display: "Categorie", visible: true, class: "" },
+    { key: "prezzo", display: "Prezzo", visible: false, class: "" }, // Nascosta ma nell'ordine d-none
+    { key: "data_ins", display: "Data", visible: false, class: "" },
+    { key: "progressivo", display: "N°", visible: true, class: "" }
+  ];
+
+  displayColumns = columnConfig.filter(col => col.visible);
 
 try {
   const res = await fetch(apiUrl);
   const data = await res.json();
   headers = data.values?.[0] ?? [];
   rows = (data.values ?? []).slice(1);
+
 
   if (rows.length > 0 && headers.length > 0) {
     const titoloIdx = headers.indexOf("titolo");
@@ -23,11 +38,15 @@ try {
 
     metaTitle = titolo && autore ? `Catalogo: ${titolo} di ${autore}` : metaTitle;
     metaDesc = abstract || metaDesc;
+
+
+
   }
 } catch (err) {
   console.error("Errore fetch:", err);
 }
 
+import { fade } from 'astro:transitions';
 import BookModal from '../components/BookModal.astro';
 ---
 <!DOCTYPE html>
@@ -231,26 +250,28 @@ import BookModal from '../components/BookModal.astro';
               <table id="sheetTable" class="table table-striped table-bordered">
                 <thead>
                   <tr>
-                    {headers.map((h) => (
-                      <th class={["ID","stato","nomefile","aggiornatoda","copertina","prezzo","visibile","autore"].includes(h) ? "d-none" : ""}>{h}</th>
+                    {displayColumns.map((col) => (
+                      <th class={col.class}>{col.display}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {rows.map((r) => (
                     <tr>
-                      {r.map((val, idx) => {
-                        const col = headers[idx];
-                        const hide = ["ID","stato","nomefile","aggiornatoda","copertina","prezzo","visibile","autore"].includes(col);
-                        const thumbIdx = headers.indexOf("Thumb");
-                        const thumbVal = thumbIdx >= 0 ? r[thumbIdx] : null;
+                      {displayColumns.map((colConfig) => {
+                        const idx = headers.indexOf(colConfig.key);
+                        const val = idx >= 0 ? r[idx] : '';
+                        
                         return (
-                          <td class={hide ? "d-none" : ""} data-col={col}>
-                            {col === "Thumb"
-                            ? <img src={val} alt="copertina"
+                          <td class={colConfig.class} data-col={colConfig.key}>
+                            {colConfig.key === "Thumb"
+                              ? <img 
+                                  src={val} 
+                                  alt="copertina"
                                   style="max-width:80px; cursor:pointer;"
-                                  onclick={`showBookModal(this)`}/>
-                            : val}
+                                  onclick={`showBookModal(this)`}
+                                />
+                              : val}
                           </td>
                         );
                       })}
