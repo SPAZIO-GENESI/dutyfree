@@ -16,11 +16,10 @@ try {
     const titoloIdx = headers.indexOf("titolo");
     const autoreIdx = headers.indexOf("autore");
     const abstractIdx = headers.indexOf("abstract");
-    const thumbIdx = headers.indexOf("Thumb");
+
     const titolo = titoloIdx >= 0 ? rows[0][titoloIdx] : undefined;
     const autore = autoreIdx >= 0 ? rows[0][autoreIdx] : undefined;
     const abstract = abstractIdx >= 0 ? rows[0][abstractIdx] : undefined;
-    
 
     metaTitle = titolo && autore ? `Catalogo: ${titolo} di ${autore}` : metaTitle;
     metaDesc = abstract || metaDesc;
@@ -247,9 +246,11 @@ import BookModal from '../components/BookModal.astro';
                         const thumbVal = thumbIdx >= 0 ? r[thumbIdx] : null;
                         return (
                           <td class={hide ? "d-none" : ""} data-col={col}>
-                            {col === "copertina"
-                              ? <img src={thumbVal || val} alt="copertina" style="max-width:80px; cursor:pointer;" onclick={`showBookModal(this)`}/>
-                              : val}
+                            {col === "Thumb"
+                            ? <img src={val} alt="copertina"
+                                  style="max-width:80px; cursor:pointer;"
+                                  onclick={`showBookModal(this)`}/>
+                            : val}
                           </td>
                         );
                       })}
