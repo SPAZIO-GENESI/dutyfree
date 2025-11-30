@@ -258,58 +258,8 @@ import BookModal from '../components/BookModal.astro';
             <p></p>
             <p></p>
           </main>
-<BookModal />
-    <!-- Bootstrap JS -->
-    <script src="/libs/bootstrap.bundle.min.js" defer></script>
 
-    <!-- Simple-DataTables ESM -->
-    <script type="module">
-    import { DataTable } from '/libs/simple-datatables.mjs';
 
-    const table = document.querySelector("#sheetTable");
-    new DataTable(table, {
-        perPage: 10,
-        perPageSelect: [10,25,50,100],
-        sortable: true,
-        searchable: true,
-        layout: {
-        topStart: "search",
-        topEnd: "perPage",
-        bottomStart: "info",
-        bottomEnd: "pagination"
-        }
-    });
-
-    // Funzione per mostrare il modal con i dati del libro
-    window.showBookModal = function(img) {
-        const row = img.closest("tr");
-        const data = {};
-        row.querySelectorAll("td").forEach(td => {
-        data[td.dataset.col] = td.innerText || td.querySelector("img")?.src;
-        });
-
-        // Costruisci HTML per il modal
-        const modalBody = document.querySelector("#bookModalBody");
-        modalBody.innerHTML = `
-        <div class="row">
-            <div class="col-md-4"><img src="${data.copertina}" alt="copertina" class="img-fluid"/></div>
-            <div class="col-md-8">
-            <h5>${data.titolo}</h5>
-            <p><strong>Autore:</strong> ${data.autore}</p>
-            <p><strong>Editore:</strong> ${data.editore || 'N/A'}</p>
-            <p><strong>ISBN:</strong> ${data.isbn || 'N/A'}</p>
-            <p><strong>Abstract:</strong> ${data.abstract || 'N/A'}</p>
-            <p><strong>Prezzo:</strong> ${data.prezzo || 'N/A'}</p>
-            <p><strong>Tags:</strong> ${data.tag || 'N/A'}</p>
-            </div>
-        </div>
-        `;
-
-        // Mostra il modal con Bootstrap
-        const modal = new bootstrap.Modal(document.getElementById('bookModal'));
-        modal.show();
-    };
-    </script>    
           <footer class="mastfoot mt-auto">
             <div class="inner">
               <p>Spazio Genesi ETS - CF 96602450585<br>sede operativa <a href="https://maps.app.goo.gl/3JEsBLW5Xx8aE2mj9">Galleria Via Roma o da Via Vicentini</a> - L'Aquila (AQ)<br><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1d74737b725d6e6d7c6774727a7873786e7433726f7a">[email&#160;protected]</a> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d8aba8b9a2b1b7bfbdb6bdabb198a8bdbbf6b1ac">[email&#160;protected]</a></p>
@@ -351,9 +301,58 @@ import BookModal from '../components/BookModal.astro';
           </footer>
         </div>
 
-      <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <BookModal />
+        
+        <script src="/libs/bootstrap.bundle.min.js" defer></script>
+
+        <!-- Simple-DataTables ESM -->
+        <script type="module">
+        import { DataTable } from '/libs/simple-datatables.mjs';
+
+        const table = document.querySelector("#sheetTable");
+        new DataTable(table, {
+            perPage: 10,
+            perPageSelect: [10,25,50,100],
+            sortable: true,
+            searchable: true,
+            layout: {
+            topStart: "search",
+            topEnd: "perPage",
+            bottomStart: "info",
+            bottomEnd: "pagination"
+            }
+        });
+
+        // Funzione per mostrare il modal con i dati del libro
+        window.showBookModal = function(img) {
+            const row = img.closest("tr");
+            const data = {};
+            row.querySelectorAll("td").forEach(td => {
+            data[td.dataset.col] = td.innerText || td.querySelector("img")?.src;
+            });
+
+            // Costruisci HTML per il modal
+            const modalBody = document.querySelector("#bookModalBody");
+            modalBody.innerHTML = `
+            <div class="row">
+                <div class="col-md-4"><img src="${data.copertina}" alt="copertina" class="img-fluid"/></div>
+                <div class="col-md-8">
+                <h5>${data.titolo}</h5>
+                <p><strong>Autore:</strong> ${data.autore}</p>
+                <p><strong>Editore:</strong> ${data.editore || 'N/A'}</p>
+                <p><strong>ISBN:</strong> ${data.isbn || 'N/A'}</p>
+                <p><strong>Abstract:</strong> ${data.abstract || 'N/A'}</p>
+                <p><strong>Prezzo:</strong> ${data.prezzo || 'N/A'}</p>
+                <p><strong>Tags:</strong> ${data.tag || 'N/A'}</p>
+                </div>
+            </div>
+            `;
+
+            // Mostra il modal con Bootstrap
+            const modal = new bootstrap.Modal(document.getElementById('bookModal'));
+            modal.show();
+        };
+        </script>    
         
 
 
