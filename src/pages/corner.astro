@@ -6,19 +6,7 @@ let metaDesc = "Catalogo libri disponibili";
 let headers = [];
 let rows = [];
 let displayColumns = [];
-
-const columnConfig = [
-    { key: "Thumb", display: "Copertina", visible: true, class: "" },
-    { key: "titolo", display: "Titolo", visible: true, class: "" },
-    { key: "Firma", display: "Autore", visible: true, class: "" },
-    { key: "editore", display: "Editore", visible: false, class: "" },
-    { key: "tag", display: "Categorie", visible: true, class: "" },
-    { key: "prezzo", display: "Prezzo", visible: false, class: "" }, // Nascosta ma nell'ordine d-none
-    { key: "data_ins", display: "Data", visible: false, class: "" },
-    { key: "progressivo", display: "N°", visible: true, class: "" }
-  ];
-
-  displayColumns = columnConfig.filter(col => col.visible);
+let filteredRows = []; // Aggiungi questa variabile
 
 try {
   const res = await fetch(apiUrl);
@@ -26,24 +14,53 @@ try {
   headers = data.values?.[0] ?? [];
   rows = (data.values ?? []).slice(1);
 
+  const columnConfig = [
+    { key: "Thumb", display: "Copertina", visible: true, class: "" },
+    { key: "titolo", display: "Titolo", visible: true, class: "" },
+    { key: "Firma", display: "Autore", visible: true, class: "" },
+    { key: "editore", display: "Editore", visible: false, class: "" },
+    { key: "tag", display: "Categorie", visible: true, class: "" },
+    { key: "prezzo", display: "Prezzo", visible: false, class: "" },
+    { key: "data_ins", display: "Data", visible: false, class: "" },
+    { key: "progressivo", display: "N°", visible: true, class: "" }
+  ];
 
-  if (rows.length > 0 && headers.length > 0) {
+  displayColumns = columnConfig.filter(col => col.visible);
+
+  // FILTRO PER STATO = TRUE
+  const statoIndex = headers.indexOf("stato");
+  if (statoIndex >= 0) {
+    filteredRows = rows.filter(row => {
+      const statoValue = row[statoIndex];
+      // Considera TRUE: "TRUE", "true", "vero", "1", true, ecc.
+      return statoValue === "TRUE" || 
+             statoValue === "true" || 
+             statoValue === "vero" || 
+             statoValue === "1" || 
+             statoValue === true ||
+             statoValue === "si" ||
+             statoValue === "SI";
+    });
+  } else {
+    // Se non c'è colonna stato, mostra tutto
+    filteredRows = rows;
+  }
+
+  if (filteredRows.length > 0 && headers.length > 0) {
     const titoloIdx = headers.indexOf("titolo");
     const autoreIdx = headers.indexOf("autore");
     const abstractIdx = headers.indexOf("abstract");
 
-    const titolo = titoloIdx >= 0 ? rows[0][titoloIdx] : undefined;
-    const autore = autoreIdx >= 0 ? rows[0][autoreIdx] : undefined;
-    const abstract = abstractIdx >= 0 ? rows[0][abstractIdx] : undefined;
+    const titolo = titoloIdx >= 0 ? filteredRows[0][titoloIdx] : undefined;
+    const autore = autoreIdx >= 0 ? filteredRows[0][autoreIdx] : undefined;
+    const abstract = abstractIdx >= 0 ? filteredRows[0][abstractIdx] : undefined;
 
     metaTitle = titolo && autore ? `Catalogo: ${titolo} di ${autore}` : metaTitle;
     metaDesc = abstract || metaDesc;
-
-
-
   }
-} catch (err) {
-  console.error("Errore fetch:", err);
+} catch (error) {
+  console.error("Errore nel caricamento dati:", error);
+  filteredRows = []; // Fallback sicuro
 }
 
 import { fade } from 'astro:transitions';
@@ -247,38 +264,43 @@ import BookModal from '../components/BookModal.astro';
           <main role="main" class="inner cover">
             <p></p>
             <p></p>
-              <table id="sheetTable" class="table table-striped table-bordered">
-                <thead>
-                  <tr>
-                    {displayColumns.map((col) => (
-                      <th class={col.class}>{col.display}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {rows.map((r) => (
-                    <tr>
-                      {displayColumns.map((colConfig) => {
-                        const idx = headers.indexOf(colConfig.key);
-                        const val = idx >= 0 ? r[idx] : '';
-                        
-                        return (
-                          <td class={colConfig.class} data-col={colConfig.key}>
-                            {colConfig.key === "Thumb"
-                              ? <img 
-                                  src={val} 
-                                  alt="copertina"
-                                  style="max-width:80px; cursor:pointer;"
-                                  onclick={`showBookModal(this)`}
-                                />
-                              : val}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                  <!-- Usa filteredRows invece di rows -->
+                  <table id="sheetTable" class="table table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        {displayColumns.map((col) => (
+                          <th class={col.class}>{col.display}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredRows.map((r) => (
+                        <tr>
+                          {displayColumns.map((colConfig) => {
+                            const idx = headers.indexOf(colConfig.key);
+                            const val = idx >= 0 ? r[idx] : '';
+                            
+                            return (
+                              <td class={colConfig.class} data-col={colConfig.key}>
+                                {colConfig.key === "Thumb"
+                                  ? <img 
+                                      src={val} 
+                                      alt="copertina"
+                                      style={{ maxWidth: '80px', cursor: 'pointer' }}
+                                      onclick="showBookModal(this)"
+                                    />
+                                  : val}
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+
+                  {filteredRows.length === 0 && (
+                    <div class="alert alert-info">Nessun libro disponibile al momento.</div>
+                  )}
             <p></p>
             <p></p>
           </main>
