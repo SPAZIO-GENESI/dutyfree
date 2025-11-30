@@ -158,6 +158,223 @@
           })();
           </script>
           <!--End of Tawk.to Script-->
+
+              <style>
+        .explosive-comic {
+            position: relative;
+            display: inline-block;
+            margin: 50px;
+            cursor: pointer;
+            filter: drop-shadow(0 0 20px rgba(255,100,0,0.3));
+        }
+
+        .comic-image {
+            width: 400px;
+            height: 500px;
+            object-fit: cover;
+            border: 5px solid #FF6B00;
+            border-radius: 10px;
+            box-shadow: 
+                0 0 30px rgba(255,107,0,0.5),
+                inset 0 0 30px rgba(255,255,255,0.1);
+            transition: all 0.3s ease-out;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Effetto esplosione principale */
+        .explosive-comic:hover .comic-image {
+            transform: scale(1.1) rotate(2deg);
+            filter: 
+                brightness(1.3) 
+                contrast(1.2)
+                drop-shadow(0 0 30px #FF0000);
+            border-color: #FF0000;
+            box-shadow: 
+                0 0 60px rgba(255,0,0,0.8),
+                0 0 100px rgba(255,100,0,0.6),
+                inset 0 0 40px rgba(255,255,0,0.3);
+        }
+
+        /* Particelle esplosive */
+        .explosion-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #FFD700;
+            border-radius: 50%;
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        .explosive-comic:hover .particle {
+            animation: explode 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        /* Posizionamento particelle */
+        .particle:nth-child(1) { top: 20%; left: 20%; animation-delay: 0.1s; background: #FF0000; }
+        .particle:nth-child(2) { top: 30%; left: 70%; animation-delay: 0.2s; background: #FF6B00; }
+        .particle:nth-child(3) { top: 60%; left: 30%; animation-delay: 0.3s; background: #FFD700; }
+        .particle:nth-child(4) { top: 70%; left: 60%; animation-delay: 0.4s; background: #FF0000; }
+        .particle:nth-child(5) { top: 40%; left: 50%; animation-delay: 0.1s; background: #FF6B00; }
+        .particle:nth-child(6) { top: 50%; left: 20%; animation-delay: 0.5s; background: #FFD700; }
+        .particle:nth-child(7) { top: 80%; left: 40%; animation-delay: 0.2s; background: #FF0000; }
+        .particle:nth-child(8) { top: 10%; left: 60%; animation-delay: 0.6s; background: #FF6B00; }
+
+        /* Onde d'urto */
+        .shockwave {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            border: 3px solid #FFD700;
+            border-radius: 50%;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: 5;
+        }
+
+        .explosive-comic:hover .shockwave {
+            animation: shockwave 1s ease-out forwards;
+        }
+
+        .shockwave:nth-child(2) {
+            animation-delay: 0.3s;
+            border-color: #FF6B00;
+        }
+
+        .shockwave:nth-child(3) {
+            animation-delay: 0.6s;
+            border-color: #FF0000;
+        }
+
+        /* Bagliore esplosivo */
+        .explosion-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(
+                circle at center,
+                rgba(255,215,0,0.8) 0%,
+                rgba(255,107,0,0.6) 30%,
+                rgba(255,0,0,0.4) 60%,
+                transparent 80%
+            );
+            opacity: 0;
+            border-radius: 10px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .explosive-comic:hover .explosion-glow {
+            animation: glowPulse 1.5s ease-in-out forwards;
+        }
+
+        /* Animazioni */
+        @keyframes explode {
+            0% {
+                opacity: 1;
+                transform: scale(0) translate(0, 0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1) translate(var(--tx, 0), var(--ty, 0));
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.5) translate(var(--tx, 100px), var(--ty, 100px));
+            }
+        }
+
+        @keyframes shockwave {
+            0% {
+                opacity: 0.8;
+                transform: translate(-50%, -50%) scale(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(4);
+            }
+        }
+
+        @keyframes glowPulse {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1.3);
+            }
+        }
+
+        /* Effetto testo fumetto "BOOM!" */
+        .boom-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-family: 'Comic Sans MS', 'Bangers', cursive;
+            font-size: 80px;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 
+                3px 3px 0 #FF0000,
+                6px 6px 0 #FF6B00,
+                0 0 20px rgba(255,215,0,0.8);
+            opacity: 0;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .explosive-comic:hover .boom-text {
+            animation: boomText 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+
+        @keyframes boomText {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0) rotate(-20deg);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2) rotate(5deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+            }
+        }
+
+        /* Vibrazione dell'immagine */
+        @keyframes vibrate {
+            0%, 100% { transform: translateX(0) rotate(0); }
+            25% { transform: translateX(-2px) rotate(-0.5deg); }
+            50% { transform: translateX(2px) rotate(0.5deg); }
+            75% { transform: translateX(-1px) rotate(-0.3deg); }
+        }
+
+        .explosive-comic:hover .comic-image {
+            animation: vibrate 0.3s ease-in-out 3;
+        }
+    </style>
     </head>
     <body>
       
@@ -177,11 +394,29 @@
           <main role="main" class="inner cover">
             <div class="container">
               <p></p>
-              <p class="lead">
-                <a id="logopopover" href="#" data-content="Logo di névoa-na-rua" rel="popover" data-placement="bottom" data-original-title="Riferimenti" data-trigger="hover"0>
-                  <img src="./img/dutyfree_p1.png" alt="DUTY FREE - Edicola autoproduzioni autogestita" width="100%">
-                </a>
-              </p>
+              <div class="explosive-comic">
+                  <img src="./dutyfree_p1.png" 
+                      alt="Fumetto esplosivo" class="comic-image">
+                  
+                  <div class="explosion-particles">
+                      <div class="particle" style="--tx: -100px; --ty: -80px;"></div>
+                      <div class="particle" style="--tx: 120px; --ty: -60px;"></div>
+                      <div class="particle" style="--tx: -80px; --ty: 100px;"></div>
+                      <div class="particle" style="--tx: 90px; --ty: 90px;"></div>
+                      <div class="particle" style="--tx: 0px; --ty: -120px;"></div>
+                      <div class="particle" style="--tx: -120px; --ty: 0px;"></div>
+                      <div class="particle" style="--tx: 100px; --ty: -100px;"></div>
+                      <div class="particle" style="--tx: -90px; --ty: 120px;"></div>
+                  </div>
+                  
+                  <div class="shockwave"></div>
+                  <div class="shockwave"></div>
+                  <div class="shockwave"></div>
+                  
+                  <div class="explosion-glow"></div>
+                  
+                  <div class="boom-text">BOOM!</div>
+              </div>
               <hr />
               <a name="evento"><h3 class="cover-heading"></h3></a>
               <div class="row">
