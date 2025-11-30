@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "astro": "^5.16.3"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "simple-datatables": "^10.2.0"
+  }
+}

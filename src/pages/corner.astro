@@ -1,0 +1,134 @@
+---
+const apiUrl = "https://cfg_googledata.it-e3f.workers.dev/?sheet=1pk8YVvDVipo2iHBgV0WtUQaChNXTCKRhq6EcxUBzlN0&f=GFD4R8";
+
+let metaTitle = "Catalogo libri";
+let metaDesc = "Catalogo libri disponibili";
+let headers = [];
+let rows = [];
+
+try {
+  const res = await fetch(apiUrl);
+  const data = await res.json();
+  headers = data.values?.[0] ?? [];
+  rows = (data.values ?? []).slice(1);
+
+  if (rows.length > 0 && headers.length > 0) {
+    const titoloIdx = headers.indexOf("titolo");
+    const autoreIdx = headers.indexOf("autore");
+    const abstractIdx = headers.indexOf("abstract");
+    const titolo = titoloIdx >= 0 ? rows[0][titoloIdx] : undefined;
+    const autore = autoreIdx >= 0 ? rows[0][autoreIdx] : undefined;
+    const abstract = abstractIdx >= 0 ? rows[0][abstractIdx] : undefined;
+
+    metaTitle = titolo && autore ? `Catalogo: ${titolo} di ${autore}` : metaTitle;
+    metaDesc = abstract || metaDesc;
+  }
+} catch (err) {
+  console.error("Errore fetch:", err);
+}
+
+import BookModal from '../components/BookModal.astro';
+---
+
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{metaTitle}</title>
+    <meta name="description" content={metaDesc} />
+
+    <!-- Bootstrap CSS -->
+    <link href="/libs/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Simple-DataTables CSS -->
+    <link href="/libs/style.css" rel="stylesheet" />
+  </head>
+  <body class="container py-4">
+
+    <header class="mb-4">
+      <h1 class="h3">{metaTitle}</h1>
+      <p class="text-muted">{metaDesc}</p>
+    </header>
+
+    <main>
+      <table id="sheetTable" class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            {headers.map((h) => (
+              <th class={["ID","stato","nomefile"].includes(h) ? "d-none" : ""}>{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr>
+              {r.map((val, idx) => {
+                const col = headers[idx];
+                const hide = ["ID","stato","nomefile"].includes(col);
+                return (
+                  <td class={hide ? "d-none" : ""} data-col={col}>
+                    {col === "copertina"
+                      ? <img src={val} alt="copertina" style="max-width:80px; cursor:pointer;" onclick={`showBookModal(this)`}/>
+                      : val}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </main>
+<BookModal />
+    <!-- Bootstrap JS -->
+    <script src="/libs/bootstrap.bundle.min.js" defer></script>
+
+    <!-- Simple-DataTables ESM -->
+    <script type="module">
+    import { DataTable } from '/libs/simple-datatables.mjs';
+
+    const table = document.querySelector("#sheetTable");
+    new DataTable(table, {
+        perPage: 10,
+        perPageSelect: [10,25,50,100],
+        sortable: true,
+        searchable: true,
+        layout: {
+        topStart: "search",
+        topEnd: "perPage",
+        bottomStart: "info",
+        bottomEnd: "pagination"
+        }
+    });
+
+    // Funzione per mostrare il modal con i dati del libro
+    window.showBookModal = function(img) {
+        const row = img.closest("tr");
+        const data = {};
+        row.querySelectorAll("td").forEach(td => {
+        data[td.dataset.col] = td.innerText || td.querySelector("img")?.src;
+        });
+
+        // Costruisci HTML per il modal
+        const modalBody = document.querySelector("#bookModalBody");
+        modalBody.innerHTML = `
+        <div class="row">
+            <div class="col-md-4"><img src="${data.copertina}" alt="copertina" class="img-fluid"/></div>
+            <div class="col-md-8">
+            <h5>${data.titolo}</h5>
+            <p><strong>Autore:</strong> ${data.autore}</p>
+            <p><strong>Editore:</strong> ${data.editore || 'N/A'}</p>
+            <p><strong>ISBN:</strong> ${data.isbn || 'N/A'}</p>
+            <p><strong>Abstract:</strong> ${data.abstract || 'N/A'}</p>
+            <p><strong>Prezzo:</strong> ${data.prezzo || 'N/A'}</p>
+            <p><strong>Tags:</strong> ${data.tag || 'N/A'}</p>
+            </div>
+        </div>
+        `;
+
+        // Mostra il modal con Bootstrap
+        const modal = new bootstrap.Modal(document.getElementById('bookModal'));
+        modal.show();
+    };
+    </script>
+
+  </body>
+</html>
