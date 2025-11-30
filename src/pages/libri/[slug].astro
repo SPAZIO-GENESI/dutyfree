@@ -1,0 +1,53 @@
+---
+export async function getStaticPaths() {
+  const apiUrl = "https://cfg_googledata.it-e3f.workers.dev/?sheet=1pk8YVvDVipo2iHBgV0WtUQaChNXTCKRhq6EcxUBzlN0&f=GFD4R8";
+  const res = await fetch(apiUrl);
+  const data = await res.json();
+  const headers = data.values?.[0] ?? [];
+  const rows = (data.values ?? []).slice(1);
+
+  const titoloIdx = headers.indexOf("titolo");
+  const autoreIdx = headers.indexOf("autore");
+  const abstractIdx = headers.indexOf("abstract");
+  const copertinaIdx = headers.indexOf("copertina");
+  const firmaIdx = headers.indexOf("Firma");
+
+  return rows.map((r) => {
+    const firma = r[firmaIdx] || "";
+    const titolo = r[titoloIdx] || "";
+
+    // costruisci slug autore-titolo
+    const slug = `${firma}-${titolo}`
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "");
+
+    return {
+      params: { slug },
+      props: {
+        titolo,
+        autore: firma,
+        abstract: r[abstractIdx],
+        copertina: r[copertinaIdx]
+      }
+    };
+  });
+}
+
+const { titolo, autore, abstract, copertina } = Astro.props;
+---
+
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{titolo} di {autore}</title>
+    <meta name="description" content={abstract} />
+    {copertina && <meta property="og:image" content={copertina} />}
+  </head>
+  <body>
+    <h1>{titolo}</h1>
+    <p><strong>Autore:</strong> {autore}</p>
+    <p>{abstract}</p>
+    {copertina && <img src={copertina} alt="copertina" />}
+  </body>
+</html>
