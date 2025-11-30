@@ -205,6 +205,197 @@ import BookModal from '../components/BookModal.astro';
         
         <style>
 
+        
+        .comic-container {
+            perspective: 2000px;
+            display: inline-block;
+            margin: 40px;
+        }
+
+        .comic {
+            width: 280px;
+            height: 420px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+            cursor: pointer;
+        }
+
+        .comic:hover {
+            transform: rotateY(-15deg) translateX(10px) translateZ(20px);
+        }
+
+        .comic-cover {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border: 3px solid #333;
+            border-radius: 8px 3px 3px 8px;
+            box-shadow: 
+                0 5px 25px rgba(0,0,0,0.3),
+                inset 0 0 30px rgba(0,0,0,0.1);
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            overflow: hidden;
+            z-index: 3;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .comic:hover .comic-cover {
+            transform: rotateY(-45deg) translateZ(10px);
+            transform-origin: left center;
+        }
+
+        .comic-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px 1px 1px 5px;
+        }
+
+        /* Effetto pagine sottili */
+        .comic-pages {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px 3px 3px 8px;
+            transform-origin: left center;
+            box-shadow: 
+                inset 5px 0 10px rgba(0,0,0,0.05),
+                0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Prima pagina che si solleva */
+        .page-1 {
+            z-index: 2;
+            transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s;
+            background: linear-gradient(90deg, #f5f5f5 95%, #e8e8e8 100%);
+        }
+
+        .comic:hover .page-1 {
+            transform: rotateY(-25deg) translateZ(5px);
+        }
+
+        /* Seconda pagina */
+        .page-2 {
+            z-index: 1;
+            transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s;
+            background: linear-gradient(90deg, #f0f0f0 95%, #e0e0e0 100%);
+        }
+
+        .comic:hover .page-2 {
+            transform: rotateY(-15deg) translateZ(2px);
+        }
+
+        /* Terza pagina */
+        .page-3 {
+            z-index: 0;
+            transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s;
+            background: linear-gradient(90deg, #e8e8e8 95%, #d8d8d8 100%);
+        }
+
+        .comic:hover .page-3 {
+            transform: rotateY(-8deg) translateZ(1px);
+        }
+
+        /* Bordo pagine laterale */
+        .pages-edge {
+            position: absolute;
+            right: -8px;
+            top: 5%;
+            width: 12px;
+            height: 90%;
+            background: repeating-linear-gradient(
+                to bottom,
+                #f8f8f8 0px,
+                #f8f8f8 2px,
+                #e0e0e0 2px,
+                #e0e0e0 4px,
+                #d0d0d0 4px,
+                #d0d0d0 6px
+            );
+            transform: rotateY(90deg);
+            border-radius: 0 2px 2px 0;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            z-index: 4;
+        }
+
+        /* Effetto di curvatura della copertina */
+        .comic-cover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255,255,255,0.1) 10%,
+                rgba(255,255,255,0.05) 50%,
+                rgba(0,0,0,0.05) 90%,
+                rgba(0,0,0,0.1) 100%
+            );
+            z-index: 2;
+            border-radius: 5px 1px 1px 5px;
+        }
+
+        /* Titolo fumetto */
+        .comic-title {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #fff;
+            font-family: 'Comic Sans MS', cursive;
+            font-size: 18px;
+            font-weight: bold;
+            text-shadow: 
+                2px 2px 0 #000,
+                -1px -1px 0 #000,
+                1px -1px 0 #000,
+                -1px 1px 0 #000;
+            padding: 0 15px;
+            z-index: 3;
+        }
+
+        /* Effetto di luce sull'hover */
+        .comic::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: radial-gradient(
+                circle at center,
+                rgba(255,255,255,0.3) 0%,
+                transparent 70%
+            );
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .comic:hover::after {
+            opacity: 1;
+        }
+      
+
 
         .comic-card {
             background: #fff;
@@ -287,6 +478,7 @@ import BookModal from '../components/BookModal.astro';
                                   ? <img 
                                       src={val} 
                                       alt="copertina"
+                                      class="comic-image"
                                       style={{ maxWidth: '80px', cursor: 'pointer' }}
                                       onclick="showBookModal(this)"
                                     />
