@@ -6,8 +6,5 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview"
-  },
-  "dependencies": {
-    "simple-datatables": "^10.2.0"
   }
 }

@@ -1,5 +1,9 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  // qui puoi aggiungere integrazioni o impostazioni
+  output: 'static',             // Astro genera solo file statici
+  site: 'https://SPAZIO-GENESI.github.io/dutyfree',
+  build: {
+    outDir: 'docs',             // Cartella che pubblicheremo su GitHub Pages
+  },
 });
