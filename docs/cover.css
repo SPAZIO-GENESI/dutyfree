@@ -4,10 +4,7 @@
 
  @media all and (min-width:0px) and (max-width: 500px) {
   /* put your css styles in here */
-  .cover-container {
-    width: 95%;
-    max-width: 400px;
-  }
+
   .cover {
     padding: 0 0rem;
   }
