@@ -232,7 +232,7 @@ import BookModal from '../components/BookModal.astro';
                 <thead>
                   <tr>
                     {headers.map((h) => (
-                      <th class={["ID","stato","nomefile","aggiornatoda","copertina","prezzo"].includes(h) ? "d-none" : ""}>{h}</th>
+                      <th class={["ID","stato","nomefile","aggiornatoda","copertina","prezzo","visibile","autore"].includes(h) ? "d-none" : ""}>{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -241,7 +241,7 @@ import BookModal from '../components/BookModal.astro';
                     <tr>
                       {r.map((val, idx) => {
                         const col = headers[idx];
-                        const hide = ["ID","stato","nomefile","aggiornatoda","copertina","prezzo"].includes(col);
+                        const hide = ["ID","stato","nomefile","aggiornatoda","copertina","prezzo","visibile","autore"].includes(col);
                         const thumbIdx = headers.indexOf("Thumb");
                         const thumbVal = thumbIdx >= 0 ? r[thumbIdx] : null;
                         return (
