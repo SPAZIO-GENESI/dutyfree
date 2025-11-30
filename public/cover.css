@@ -32,7 +32,9 @@
         margin: 0;
         min-width: 100vw;
     }
-    
+    body {
+        overflow-x: hidden;
+    }
     .explosive-comic {
         margin: 1rem 0;
         max-width: 100%;
@@ -43,6 +45,13 @@
         max-width: 280px;
         height: auto;
     }
+}
+
+.cover-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 1rem;
 }
 
 /* Links */
