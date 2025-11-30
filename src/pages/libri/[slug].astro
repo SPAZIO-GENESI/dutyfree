@@ -11,6 +11,7 @@ export async function getStaticPaths() {
   const abstractIdx = headers.indexOf("abstract");
   const copertinaIdx = headers.indexOf("copertina");
   const firmaIdx = headers.indexOf("Firma");
+  const thumbIdx = headers.indexOf("Thumb");
 
   return rows.map((r) => {
     const firma = r[firmaIdx] || "";
@@ -28,13 +29,14 @@ export async function getStaticPaths() {
         titolo,
         autore: firma,
         abstract: r[abstractIdx],
-        copertina: r[copertinaIdx]
+        copertina: r[copertinaIdx],
+        thumb: r[thumbIdx]
       }
     };
   });
 }
 
-const { titolo, autore, abstract, copertina } = Astro.props;
+const { titolo, autore, abstract, copertina, thumb } = Astro.props;
 ---
 
 <html lang="it">
@@ -48,6 +50,6 @@ const { titolo, autore, abstract, copertina } = Astro.props;
     <h1>{titolo}</h1>
     <p><strong>Autore:</strong> {autore}</p>
     <p>{abstract}</p>
-    {copertina && <img src={copertina} alt="copertina" />}
+    {copertina && <img src={thumb} alt="copertina" />}
   </body>
 </html>
