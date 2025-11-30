@@ -46,11 +46,23 @@ const { titolo, autore, abstract, copertina, thumb } = Astro.props;
     <title>{titolo} di {autore}</title>
     <meta name="description" content={abstract} />
     {copertina && <meta property="og:image" content={copertina} />}
+    <style>
+        .book-cover {
+            max-width: 200px;
+            border: 1px solid #aaa;
+            box-shadow: 8px 8px 15px rgba(0,0,0,0.2);
+            border-radius: 3px;
+            background: linear-gradient(to right, #fff 90%, #ddd 100%);
+            }
+        .book-cover:hover {
+            transform: perspective(600px) rotateY(0deg);
+            }
+    </style>
   </head>
   <body>
     <h1>{titolo}</h1>
     <p><strong>Autore:</strong> {autore}</p>
     <p>{abstract}</p>
-    {copertina && <img src={thumb} alt="copertina" />}
+    {copertina && <img class="book-cover" src={thumb} alt="copertina" />}
   </body>
 </html>
