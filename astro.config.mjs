@@ -5,5 +5,6 @@ export default defineConfig({
   site: 'https://SPAZIO-GENESI.github.io/dutyfree',
   build: {
     outDir: 'docs',             // Cartella che pubblicheremo su GitHub Pages
+    publicDir: 'public'
   },
 });
