@@ -572,6 +572,28 @@ td .libro-sfogliabile {
 .libro-sfogliabile * {
     box-sizing: border-box;
 }
+
+/* Se le immagini sono già in celle con classe specifica */
+td.product-image-cell {
+    position: relative;
+    perspective: 1200px;
+}
+
+td.product-image-cell img {
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform-style: preserve-3d;
+    border-radius: 5px 15px 15px 5px;
+    box-shadow: 
+        0 10px 25px rgba(0,0,0,0.3),
+        inset 5px 0 10px rgba(0,0,0,0.2);
+}
+
+td.product-image-cell:hover img {
+    transform: rotateY(-25deg) translateX(10px) translateZ(15px);
+    box-shadow: 
+        15px 10px 35px rgba(0,0,0,0.4),
+        inset 8px 0 15px rgba(0,0,0,0.3);
+}
         </style>
 
     </head>
@@ -615,7 +637,7 @@ td .libro-sfogliabile {
                                   ? <img 
                                       src={val} 
                                       alt="copertina"
-                                      class="comic-image"
+                                      class="product-image-cell"
                                       style={{ maxWidth: '80px', cursor: 'pointer' }}
                                       onclick="showBookModal(this)"
                                     />
