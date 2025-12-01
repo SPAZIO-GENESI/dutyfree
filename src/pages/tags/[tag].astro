@@ -41,6 +41,7 @@ function slugify(str) {
     .toLowerCase()
     .normalize("NFD")        // decomposizione accenti
     .replace(/[\u0300-\u036f]/g, "") // rimuove accenti
+    .replace(/'/g, "")                // rimuove apostrofi
     .replace(/[^a-z0-9]+/g, "-") // sostituisce spazi e simboli con -
     .replace(/^-+|-+$/g, "");    // rimuove - iniziali/finali
 }
