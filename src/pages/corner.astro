@@ -310,29 +310,47 @@ import BookModal from '../components/BookModal.astro';
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredRows.map((r) => (
-                        <tr>
-                          {displayColumns.map((colConfig) => {
-                            const idx = headers.indexOf(colConfig.key);
-                            const val = idx >= 0 ? r[idx] : '';
-                            
-                            return (
-                              <td class={colConfig.class} data-col={colConfig.key}>
-                                {colConfig.key === "Thumb"
-                                  ? <img 
-                                      src={val} 
-                                      alt="copertina"
-                                      class="libro-sfogliabile"
-                                      style={{ maxWidth: '80px', cursor: 'pointer' }}
-                                      onclick="showBookModal(this)"
+                        {filteredRows.map((r) => (
+                            <tr>
+                            {displayColumns.map((colConfig) => {
+                                const idx = headers.indexOf(colConfig.key);
+                                const val = idx >= 0 ? r[idx] : '';
+
+                                return (
+                                <td class={colConfig.class} data-col={colConfig.key}>
+                                    {colConfig.key === "Thumb" ? (
+                                    <img
+                                        src={val}
+                                        alt="copertina"
+                                        class="libro-sfogliabile"
+                                        style={{ maxWidth: '80px', cursor: 'pointer' }}
+                                        onclick="showBookModal(this)"
                                     />
-                                  : val}
-                              </td>
-                            );
-                          })}
-                        </tr>
-                      ))}
-                    </tbody>
+                                    ) : colConfig.key === "tag" ? (
+                                    val
+                                        .split(/\s+/) // separa i tag per spazi
+                                        .map((tag) => {
+                                        const cleanTag = tag.replace(/^#/, ''); // rimuove il #
+                                        return (
+                                            <a
+                                            href={`https://dutyfree.spaziogenesi.org/tags/${cleanTag}/`}
+                                            class="tag-link"
+                                            style={{ marginRight: '5px' }}
+                                            >
+                                            {tag}
+                                            </a>
+                                        );
+                                        })
+                                    ) : (
+                                    val
+                                    )}
+                                </td>
+                                );
+                            })}
+                            </tr>
+                        ))}
+                        </tbody>
+
                   </table>
 
                   {filteredRows.length === 0 && (
