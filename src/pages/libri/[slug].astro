@@ -314,15 +314,23 @@ const { titolo, autore, abstract, copertina, thumb, tags } = Astro.props;
                         <div class="col-md-8">
                             <h1>{titolo}</h1>
                             <h5>di {autore}</h5>
-                            <span class="badge badge-comic">
+                            <div class="badge badge-comic d-flex flex-wrap">
                               {tags.split(' ').map(tag => {
                                 if (tag.startsWith('#')) {
                                   const cleanTag = tag.slice(1);
-                                  return <a href={`/tags/${cleanTag}/`} class="text-white" style="margin-right:10px">{tag}</a>;
+                                  return (
+                                    <a
+                                      href={`/tags/${cleanTag}/`}
+                                      class="text-white"
+                                      style="display:inline-block; margin: 0 15px 10px 0;"
+                                    >
+                                      {tag}
+                                    </a>
+                                  );
                                 }
                                 return null;
                               })}
-                            </span>
+                            </div>
 
                             <p class="mt-3">{abstract}</p>
                             <a href="/corner" class="btn btn-comic mt-3">⬅ Torna al catalogo</a>
