@@ -1,0 +1,72 @@
+---
+const apiUrl = "https://cfg_googledata.it-e3f.workers.dev/?sheet=1pk8YVvDVipo2iHBgV0WtUQaChNXTCKRhq6EcxUBzlN0&f=GFD4R8";
+
+// getStaticPaths come prima
+export async function getStaticPaths() {
+  const apiUrl = "https://cfg_googledata.it-e3f.workers.dev/?sheet=1pk8YVvDVipo2iHBgV0WtUQaChNXTCKRhq6EcxUBzlN0&f=GFD4R8";
+  const res = await fetch(apiUrl);
+  const json = await res.json();
+  const headers = json.values[0] || [];
+  const books = json.values.slice(1).map(row => {
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = row[i] || "");
+    return obj;
+  });
+
+  const allTags = [...new Set(
+    books.flatMap(book => (book.tag || "").split(" ").filter(Boolean))
+  )];
+
+  return allTags.map(t => ({ params: { tag: t.replace("#", "") } }));
+}
+
+// Fetch per la pagina
+const { tag } = Astro.params;
+const res = await fetch(apiUrl);
+const json = await res.json();
+const headers = json.values[0] || [];
+const books = json.values.slice(1).map(row => {
+  const obj = {};
+  headers.forEach((h, i) => obj[h] = row[i] || "");
+  return obj;
+});
+
+const filteredBooks = books.filter(book =>
+  (book.tag || "").split(" ").filter(Boolean).includes(`#${tag}`)
+);
+
+// Funzione per creare slug URL friendly
+function slugify(str) {
+  return str
+    .toLowerCase()
+    .normalize("NFD")        // decomposizione accenti
+    .replace(/[\u0300-\u036f]/g, "") // rimuove accenti
+    .replace(/[^a-z0-9]+/g, "-") // sostituisce spazi e simboli con -
+    .replace(/^-+|-+$/g, "");    // rimuove - iniziali/finali
+}
+---
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Libri con tag: #{tag}</title>
+  </head>
+  <body>
+    <h1>Libri con tag: #{tag}</h1>
+
+    {filteredBooks.length > 0 ? (
+      <ul>
+        {filteredBooks.map(book => {
+          const titoloSlug = slugify(book.titolo || "sconosciuto");
+          const autoreSlug = slugify(book.Firma || "sconosciuto");
+          const url = `https://dutyfree.spaziogenesi.org/libri/${autoreSlug}-${titoloSlug}/`;
+          return <li><a href={url}>{book.Firma} — {book.titolo}</a></li>;
+        })}
+      </ul>
+    ) : (
+      <p>Nessun libro trovato per questo tag.</p>
+    )}
+
+    <a href="/tags">← Torna ai tag</a>
+  </body>
+</html>
