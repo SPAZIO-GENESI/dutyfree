@@ -21,9 +21,10 @@ try {
     { key: "Thumb", display: "Copertina", visible: true, class: "" },
     { key: "titolo", display: "Titolo", visible: true, class: "" },
     { key: "Firma", display: "Autore", visible: true, class: "" },
-    { key: "editore", display: "Editore", visible: false, class: "" },
+    { key: "editore", display: "Editore", visible: true, class: "d-none" },
     { key: "tag", display: "Categorie", visible: true, class: "" },
-    { key: "prezzo", display: "Prezzo", visible: false, class: "" },
+    { key: "prezzo", display: "Prezzo", visible: true, class: "d-none" },
+    { key: "abstract", display: "Abstract", visible: true, class: "d-none" },
     { key: "data_ins", display: "Data", visible: false, class: "" },
     { key: "progressivo", display: "N°", visible: true, class: "" }
   ];
@@ -352,16 +353,32 @@ import BookModal from '../components/BookModal.astro';
             // Costruisci HTML per il modal
             const modalBody = document.querySelector("#bookModalBody");
             modalBody.innerHTML = `
-            <div class="row">
-                <div class="col-md-4"><img src="${data.Thumb}" alt="copertina" class="img-fluid"/></div>
-                <div class="col-md-8">
-                <h5>${data.titolo}</h5>
-                <p><strong>Autore:</strong> ${data.autore}</p>
-                <p><strong>Editore:</strong> ${data.editore || 'N/A'}</p>
-                <p><strong>ISBN:</strong> ${data.isbn || 'N/A'}</p>
-                <p><strong>Abstract:</strong> ${data.abstract || 'N/A'}</p>
-                <p><strong>Prezzo:</strong> ${data.prezzo || 'N/A'}</p>
-                <p><strong>Tags:</strong> ${data.tag || 'N/A'}</p>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-md-8 col-sm-12">
+                        <div class="comic-container">
+                            <div class="comic">
+                                <div class="comic-cover">
+                                    <img src="${data.Thumb}" alt="copertina" class="img-fluid"/>
+                                </div>
+                                <div class="comic-pages">
+                                    <div class="page page-1"></div>
+                                    <div class="page page-2"></div>
+                                    <div class="page page-3"></div>
+                                </div>
+                                <div class="pages-edge"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 col-sm-12" style="text-align: left;">
+                    <h5>${data.titolo}</h5>
+                    <p><strong>Autore:</strong> ${data.Firma}</p>
+                    <p><strong>Editore:</strong> ${data.editore || 'N/A'}</p>
+                    <p><strong>ISBN:</strong> ${data.isbn || 'N/A'}</p>
+                    <p><strong>Abstract:</strong> ${data.abstract || 'N/A'}</p>
+                    <p><strong>Prezzo:</strong> ${data.prezzo || 'N/A'}</p>
+                    <p><strong>Tags:</strong> ${data.tag || 'N/A'}</p>
+                    </div>
                 </div>
             </div>
             `;
