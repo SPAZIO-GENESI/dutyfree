@@ -4,7 +4,12 @@
 
  @media all and (min-width:0px) and (max-width: 500px) {
   /* put your css styles in here */
-
+  .cover-container {
+    width: 100%; 
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 1rem;
+  }
   .cover {
     padding: 0 0rem;
   }
@@ -21,6 +26,33 @@
   }
 }
 
+@media (max-width: 360px) {
+    .cover-container {
+        padding: 0.5rem;
+        margin: 0;
+        min-width: 100vw;
+    }
+    body {
+        overflow-x: hidden;
+    }
+    .explosive-comic {
+        margin: 1rem 0;
+        max-width: 100%;
+    }
+    
+    .comic-image {
+        width: 100%;
+        max-width: 280px;
+        height: auto;
+    }
+}
+
+.cover-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 1rem;
+}
 
 /* Links */
 a {

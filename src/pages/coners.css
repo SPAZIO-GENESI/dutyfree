@@ -1,0 +1,238 @@
+/* Responsive styles per Spazio Genesi Duty Free */
+
+/* Mobile First Adjustments */
+@media (max-width: 768px) {
+  /* Header e navigazione */
+  .cover-container {
+    padding: 1rem !important;
+  }
+  
+  .masthead-brand {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .nav-masthead {
+    flex-wrap: wrap;
+    justify-content: center !important;
+  }
+  
+  .nav-link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+  
+  /* Tabella e datatable */
+  .datatable-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .datatable-table {
+    font-size: 0.85rem;
+  }
+  
+  .datatable-table th,
+  .datatable-table td {
+    padding: 0.5rem 0.3rem;
+  }
+  
+  /* Nascondi alcune colonne su mobile */
+  .datatable-table th:nth-child(4), /* Categorie */
+  .datatable-table td:nth-child(4) {
+    display: none;
+  }
+  
+  /* Riduci dimensioni immagini */
+  .product-image-cell {
+    max-width: 60px !important;
+  }
+  
+  /* Controlli datatable */
+  .datatable-top,
+  .datatable-bottom {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .datatable-dropdown,
+  .datatable-search {
+    margin-bottom: 0.5rem;
+  }
+  
+  .datatable-search input {
+    width: 100% !important;
+  }
+  
+  /* Modal per i dettagli libro */
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+  
+  .modal-body .row {
+    flex-direction: column;
+  }
+  
+  .modal-body .col-md-4,
+  .modal-body .col-md-8 {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .modal-body .col-md-4 {
+    margin-bottom: 1rem;
+  }
+  
+  /* Footer */
+  .mastfoot {
+    font-size: 0.85rem;
+  }
+  
+  .mastfoot svg {
+    height: 30px;
+    margin: 0.5rem 0;
+  }
+  
+  .mastfoot p {
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* Tablet e schermi medi */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .cover-container {
+    padding: 1.5rem !important;
+  }
+  
+  .datatable-table {
+    font-size: 0.9rem;
+  }
+  
+  .product-image-cell {
+    max-width: 70px !important;
+  }
+  
+  /* Riduci spazio colonne meno importanti */
+  .datatable-table th:nth-child(5),
+  .datatable-table td:nth-child(5) {
+    width: 8% !important;
+  }
+}
+
+/* Ottimizzazioni per dispositivi touch */
+@media (hover: none) and (pointer: coarse) {
+  .nav-link {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+  
+  .datatable-sorter,
+  .datatable-selector,
+  .btn {
+    min-height: 44px; /* Dimensione minima per touch */
+    min-width: 44px;
+  }
+  
+  .product-image-cell {
+    padding: 5px;
+  }
+}
+
+/* Miglioramenti generali per mobile */
+@media (max-width: 576px) {
+  /* Header più compatto */
+  .inner {
+    padding: 0;
+  }
+  
+  .nav {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .nav-link {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  /* Riduci ulteriormente la tabella */
+  .datatable-table th:nth-child(3), /* Autore */
+  .datatable-table td:nth-child(3) {
+    display: none;
+  }
+  
+  /* Info della tabella */
+  .datatable-info {
+    font-size: 0.8rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Paginazione */
+  .datatable-pagination-list li {
+    margin: 0 2px;
+  }
+  
+  .datatable-pagination-list .datatable-pagination-list-item a {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  /* Footer più compatto */
+  .mastfoot .inner {
+    padding: 0.5rem;
+  }
+}
+
+/* Per schermi molto piccoli (es. iPhone SE) */
+@media (max-width: 375px) {
+  .masthead-brand {
+    font-size: 1.2rem;
+  }
+  
+  .datatable-table {
+    font-size: 0.75rem;
+  }
+  
+  .product-image-cell {
+    max-width: 50px !important;
+  }
+  
+  .modal-title {
+    font-size: 1.1rem;
+  }
+}
+
+/* Ottimizzazioni per landscape su mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .cover-container {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+  
+  .masthead {
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .datatable-wrapper {
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+}
+
+/* Miglioramento per la leggibilità del testo */
+body {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Previene lo zoom su input su iOS */
+@media screen and (max-width: 768px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important; /* Previene lo zoom automatico su iOS */
+  }
+}
