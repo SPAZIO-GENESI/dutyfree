@@ -69,6 +69,16 @@ try {
 
 import { fade } from 'astro:transitions';
 import BookModal from '../components/BookModal.astro';
+
+function slugify(str) {
+  return str
+    .toLowerCase()
+    .normalize("NFD")        // decomposizione accenti
+    .replace(/[\u0300-\u036f]/g, "") // rimuove accenti
+    .replace(/'/g, "")                // rimuove apostrofi
+    .replace(/[^a-z0-9]+/g, "-") // sostituisce spazi e simboli con -
+    .replace(/^-+|-+$/g, "");    // rimuove - iniziali/finali
+}
 ---
 <!DOCTYPE html>
 <html lang="it" class="h-100">
@@ -150,8 +160,8 @@ import BookModal from '../components/BookModal.astro';
         
 
         <!-- HTML Meta Tags -->
-        <title>{metaTitle}</title>
-        <meta name="description" content={metaDesc} />
+        <title>DUTY FREE lista dei fumetti</title>
+        <meta name="description" content="Lista dei fumetti disponibili nel corner DUTY FREE ospitato presso SPAZIO GENESI L'AQUILA, autoproduzione autogestita studenti/esse ABAQ">
 
         <!-- Open Graph Meta Tags -->
         <meta property="og:url" content="http://dutyfree.spaziogenesi.org">
@@ -339,8 +349,18 @@ import BookModal from '../components/BookModal.astro';
                                             >
                                             {tag}
                                             </a>
+                                        );})
+                                    ) : colConfig.key === "titolo" ? (
+                                      (() => {
+                                        const titoloSlug = slugify(r[headers.indexOf("titolo")] || "sconosciuto");
+                                        const autoreSlug = slugify(r[headers.indexOf("Firma")] || "sconosciuto");
+                                        const url = `/libri/${autoreSlug}-${titoloSlug}/`;
+                                        return (
+                                          <a href={url} class="titolo-link">
+                                             {val}
+                                          </a>
                                         );
-                                        })
+                                      })()
                                     ) : (
                                     val
                                     )}
