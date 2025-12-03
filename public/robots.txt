@@ -1,0 +1,15 @@
+# Consenti a tutti i crawler di indicizzare il sito
+User-agent: *
+Allow: /
+Allow: /docs
+
+Disallow: /public
+Disallow: /dist
+Disallow: /node_modules
+Disallow: /src
+Disallow: /.astro
+Disallow: /.github
+
+
+# Indica la sitemap generata da Astro (plugin @astrojs/sitemap)
+Sitemap: https://dutyfree.spaziogenesi.org/sitemap-index.xml
